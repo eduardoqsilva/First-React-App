@@ -6,6 +6,7 @@ export function Home() {
 
   const [studentName, setStudentName] = useState()
   const [students, setStudents] = useState([])
+  const [user, setUser] = useState({name: '', avatar: ''})
 
   function handleAddStudent(){
     const newStudent = {
@@ -21,8 +22,15 @@ export function Home() {
 
   useEffect(() => {
     //corpo do useEffect
-    console.log("useEffect foi chamado!")
-  }, [students])
+    fetch('https://api.github.com/users/eduardoqsilva')
+    .then(Response => Response.json())
+    .then(data => {
+      setUser({
+        avatar: data.avatar_url,
+        name: data.name
+      })
+    })
+  }, [])
 
   return (
     <div className='container'>
@@ -30,8 +38,8 @@ export function Home() {
       <header>
         <h1>Lista de Presença</h1>
         <div>
-          <strong>Eduardo</strong>
-          <img src="https://github.com/eduardoqsilva.png" alt="foto de perfil" />
+          <strong>{user.name}</strong>
+          <img src={user.avatar} alt="Imagem de perfil"/>
         </div>
       </header>
       
